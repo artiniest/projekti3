@@ -14,11 +14,62 @@ public class Player : MonoBehaviour
 	public SpriteRenderer machete;
 	public Sprite replaceSprite;
 	public Animator maattori;
+	public Animator playerMaattori;
+
+	float movementx;
+	float movementy;
+
+	void Update ()
+	{
+		if (movementx < -0.09f) 
+		{
+			playerMaattori.SetBool ("movingLeft", true);
+			playerMaattori.SetBool ("movingRight", false);
+			playerMaattori.SetBool ("ReturnX", false);
+		}
+
+		if (movementx > 0.09f) 
+		{
+			playerMaattori.SetBool ("movingLeft", false);
+			playerMaattori.SetBool ("movingRight", true);
+			playerMaattori.SetBool ("ReturnX", false);
+		}
+
+		if (movementx == 0) 
+		{
+			playerMaattori.SetBool ("movingLeft", false);
+			playerMaattori.SetBool ("movingRight", false);
+			playerMaattori.SetBool ("ReturnX", true);
+		}
+
+		////////////////////////////////////////////////
+
+		if (movementy < -0.09f) 
+		{
+			playerMaattori.SetBool ("movingDown", true);
+			playerMaattori.SetBool ("movingUp", false);
+			playerMaattori.SetBool ("ReturnY", false);
+		}
+
+		if (movementy > 0.09f) 
+		{
+			playerMaattori.SetBool ("movingDown", false);
+			playerMaattori.SetBool ("movingUp", true);
+			playerMaattori.SetBool ("ReturnY", false);
+		}
+
+		if (movementy == 0) 
+		{
+			playerMaattori.SetBool ("movingDown", false);
+			playerMaattori.SetBool ("movingUp", false);
+			playerMaattori.SetBool ("ReturnY", true);
+		}
+	}
 
 	void FixedUpdate ()
 	{
-		float movementx = Input.GetAxis ("Horizontal") * Time.deltaTime * moveSpeed;
-		float movementy = Input.GetAxis ("Vertical") * Time.deltaTime * moveSpeed;
+		movementx = Input.GetAxis ("Horizontal") * Time.deltaTime * moveSpeed;
+		movementy = Input.GetAxis ("Vertical") * Time.deltaTime * moveSpeed;
 		rigb.AddForce (new Vector2 (movementx, movementy), ForceMode2D.Impulse);
 	}
 
