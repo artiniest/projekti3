@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour 
 {
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
 	bool hasMachete = false;
 	public SpriteRenderer machete;
 	public Sprite replaceSprite;
+	public Image ques;
+	public Image excl;
 	public Animator maattori;
 	public Animator playerMaattori;
 
@@ -106,20 +109,41 @@ public class Player : MonoBehaviour
 			kameraPos.y = locations [2].position.y;
 			kamera.transform.position = kameraPos;
 			break;
+
 		case "Vines":
+			if (hasMachete == true) 
+			{
+				excl.enabled = true;
+			}
+			if (hasMachete == false) 
+			{
+				ques.enabled = true;
+			}
 			if (Input.GetKeyDown (KeyCode.E) && hasMachete == true) 
 			{
 				maattori.SetBool ("Iscut", true);
 				other.GetComponent<BoxCollider2D> ().enabled = false;
+				Destroy (other.gameObject.GetComponent<BoxCollider2D> ());
 			}
 			break;
+
 		case "Mach":
+			excl.enabled = true;
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
 				hasMachete = true;
 				machete.sprite = replaceSprite;
+				Destroy (other.gameObject.GetComponent<Collider2D>());
 			}
 			break;
+		case "Altar":
+			break;
 		}
+	}
+
+	void OnTriggerExit2D (Collider2D other)
+	{
+		ques.enabled = false;
+		excl.enabled = false;
 	}
 }
