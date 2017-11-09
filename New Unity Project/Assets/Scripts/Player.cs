@@ -122,8 +122,13 @@ public class Player : MonoBehaviour
 			if (Input.GetKeyDown (KeyCode.E) && hasMachete == true) 
 			{
 				maattori.SetBool ("Iscut", true);
-				other.GetComponent<BoxCollider2D> ().enabled = false;
-				Destroy (other.gameObject.GetComponent<BoxCollider2D> ());
+				BoxCollider2D[] tempArr = other.GetComponents<BoxCollider2D> ();
+				foreach (BoxCollider2D box in tempArr)
+				{
+					box.enabled = false;
+				}
+				//Destroy (other.gameObject.GetComponent<BoxCollider2D> ());
+				//other.GetComponent<BoxCollider2D> ().enabled = false;
 			}
 			break;
 
