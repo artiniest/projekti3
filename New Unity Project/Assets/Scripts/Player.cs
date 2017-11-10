@@ -5,14 +5,16 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour 
 {
+	public int leveltoload;
 	public GameObject kamera;
 	public Transform [] locations;
 	public Rigidbody2D rigb;
 
 	public float moveSpeed = 10f;
 
-	bool hasMachete = false;
-	public SpriteRenderer machete;
+	bool hasItem = false;
+	bool hasItem2 = false;
+	public SpriteRenderer Item1;
 	public Sprite replaceSprite;
 	public Image ques;
 	public Image excl;
@@ -21,6 +23,7 @@ public class Player : MonoBehaviour
 
 	float movementx;
 	float movementy;
+
 
 	void Update ()
 	{
@@ -81,8 +84,7 @@ public class Player : MonoBehaviour
 		Vector2 newPos = transform.position;
 		Vector3 kameraPos = kamera.transform.position;
 
-		switch (other.tag) 
-		{
+		switch (other.tag) {
 		case "Left":
 			newPos = locations [0].position;
 			transform.position = newPos; 
@@ -111,19 +113,19 @@ public class Player : MonoBehaviour
 			break;
 
 		case "Vines":
-			if (hasMachete == true) 
+			if (hasItem == true) 
 			{
 				excl.enabled = true;
 			}
-			if (hasMachete == false) 
+			if (hasItem == false) 
 			{
 				ques.enabled = true;
 			}
-			if (Input.GetKeyDown (KeyCode.E) && hasMachete == true) 
+			if (Input.GetKeyDown (KeyCode.E) && hasItem == true) 
 			{
 				maattori.SetBool ("Iscut", true);
 				BoxCollider2D[] tempArr = other.GetComponents<BoxCollider2D> ();
-				foreach (BoxCollider2D box in tempArr)
+				foreach (BoxCollider2D box in tempArr) 
 				{
 					box.enabled = false;
 				}
@@ -136,12 +138,66 @@ public class Player : MonoBehaviour
 			excl.enabled = true;
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				hasMachete = true;
-				machete.sprite = replaceSprite;
+				hasItem = true;
+				Item1.sprite = replaceSprite;
+				Destroy (other.gameObject.GetComponent<Collider2D> ());
+			}
+			break;
+
+		case "TP":
+			Application.LoadLevel (leveltoload);
+			break;
+
+		case "Coconut":
+			excl.enabled = true;
+			if (Input.GetKeyDown (KeyCode.E)) 
+			{
+				hasItem = true;
+				Item1.enabled = false;
 				Destroy (other.gameObject.GetComponent<Collider2D>());
 			}
 			break;
+
+		case "PalmTree":
+			if (hasItem == true) 
+			{
+				excl.enabled = true;
+			}
+
+			if (hasItem == false) 
+			{
+				ques.enabled = true;
+			}
+
+			if (Input.GetKeyDown (KeyCode.E) && hasItem == true) 
+			{
+				maattori.SetTrigger ("Healed");
+				BoxCollider2D[] tempArr = other.GetComponents<BoxCollider2D> ();
+				hasItem2 = true;
+				foreach (BoxCollider2D box in tempArr) 
+				{
+					box.enabled = false;
+				}
+			}
+			break;
+
 		case "Altar":
+			if (hasItem2 == true) 
+			{
+				excl.enabled = true;
+			}
+
+			if (hasItem2 == false) 
+			{
+				ques.enabled = true;
+			}
+
+			if (Input.GetKeyDown (KeyCode.E) && hasItem2 == true) 
+			{
+				BoxCollider2D tempArr = other.GetComponent<BoxCollider2D> ();
+				tempArr.enabled = false;
+				Application.LoadLevel (3);
+			}
 			break;
 		}
 	}
