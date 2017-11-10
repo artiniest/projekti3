@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 	bool hasItem = false;
 	bool hasItem2 = false;
 	public SpriteRenderer Item1;
+	public SpriteRenderer Sprot;
 	public Sprite replaceSprite;
 	public Image ques;
 	public Image excl;
@@ -196,6 +197,7 @@ public class Player : MonoBehaviour
 			{
 				BoxCollider2D tempArr = other.GetComponent<BoxCollider2D> ();
 				tempArr.enabled = false;
+				Sprot.sprite = replaceSprite;
 				Application.LoadLevel (3);
 			}
 			break;
